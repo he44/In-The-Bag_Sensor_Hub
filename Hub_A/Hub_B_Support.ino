@@ -73,7 +73,7 @@ void sendGetCommand(byte cmd)
 void sendData(byte num, float temp, float humid)
 {
   Serial.println(F("Recording Data..."));
-  Serial.print(F("6 "));
+  Serial.print(F("28 "));
   Serial.print(num);
   Serial.print(" ");
   Serial.print(temp);
@@ -81,7 +81,7 @@ void sendData(byte num, float temp, float humid)
   Serial.println(humid);
   Serial.flush();
   
-  SerialB.print("6 ");
+  SerialB.print("28 ");
   SerialB.print(num);
   SerialB.print(' ');
   SerialB.print(temp);

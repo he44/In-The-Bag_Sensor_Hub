@@ -37,7 +37,8 @@
 // Temperature and Humidity definitions
 #define criticalTemp 50
 #define criticalHum  80
-#define ALARM_BITS 8
+//#define ALARM_BITS 8
+#define ALARM_BITS 12
 
 //=====[ VARIABLES ]============================================================
 bool Century = false;
@@ -58,9 +59,9 @@ void setup()
   Serial.begin(9600);
   SerialB2A.begin(9600);
   
-  pinMode(ALARM,INPUT);
-  pinMode(FLAG,OUTPUT);
-  digitalWrite(FLAG,HIGH);
+  pinMode(ALARM, INPUT);
+  pinMode(FLAG, OUTPUT);
+  digitalWrite(FLAG, HIGH);
   
   Serial.println(F("Setting up SD card..."));
   if (!SD.begin(CS)) 
@@ -70,8 +71,14 @@ void setup()
   }
   
   SerialB2A.ClearAllBuffer();
+  
+  Clock.turnOnAlarm(1);
+  byte m = (Clock.getMinute() + logFreq) % 60;
+  Clock.setA1Time(Clock.getDate(), 0, m, 0, ALARM_BITS, false, h12, PM);
+  Serial.println(F("Alarm has been set!"));
+
   Serial.println(F("Setup done."));
-  digitalWrite(FLAG,LOW);
+  digitalWrite(FLAG, LOW);
 }
 //==============================================================================
 
@@ -80,18 +87,23 @@ void setup()
 void loop() 
 {
   //Check if it's time to remind Hub_A to check sensors
-  if(digitalRead(ALARM) == HIGH)
+  if(Clock.checkIfAlarm(1))
   {
     digitalWrite(FLAG, HIGH);
-    Clock.checkIfAlarm(1);
-    byte h = (Clock.getHour(h12,PM) + logFreq) % 24;
-    Clock.setA1Time(Clock.getDate(), h, 0, 0, ALARM_BITS, false, h12, PM);
+    //Every Hour
+    //byte h = (Clock.getHour(h12,PM) + logFreq) % 24;
+    //Clock.setA1Time(Clock.getDate(), h, 0, 0, ALARM_BITS, false, h12, PM);
+    
+    //Every Minute
+    byte m = (Clock.getMinute() + logFreq) % 60;
+    Clock.setA1Time(Clock.getDate(), 0, m, 0, ALARM_BITS, false, h12, PM);
+    Serial.println(F("Alarm has been set!"));
   }
   
   //Standby and wait for commands from Hub_A
   if(SerialB2A.available() > 0)
   {
-    Serial.println(F("Start Reading"));
+    //Serial.println(F("Start Reading"));
     SerialB2A.listen();
     SerialB2A.ReadCommand();
     int i = atoi(SerialB2A.Parameter[0]);
@@ -101,62 +113,62 @@ void loop()
     {
       case 1:
 //      {SerialB2A.ReplyStatus(Reset());break;}
-      case 2:
+      case 2: // GetHubID
         {GetHubID();break;}
-      case 3:
+      case 3: // SetHubID
         {SerialB2A.ReplyStatus(SetHubID());break;}
-      case 4: // CheckErrorHistory
+      case 4: // CheckErrorHistory*
         {break;}
-      case 5: // Turn off flag
+      case 5: // Turn off flag*
         {TurnOffFlag();break;}
       case 6: // Get a sensorID/ MAC address
         {GetMacAddress(atoi(SerialB2A.Parameter[1]));break;}
       case 7: // Set a sensor ID
         {break;}
-      case 8:
+      case 8: // SetMacAddress
         {SerialB2A.ReplyStatus(SetMacAddress());break;}
-      case 9:
+      case 9: //***
         {break;}
-      case 10:
+      case 10: // RemoveAllSensors
         {RemoveAllSensor();break;}
-      case 11:
+      case 11: // GetAlertPhone
         {GetNotificationPhone();break;}
-      case 12:
+      case 12: // SetAlertPhone
         {SerialB2A.ReplyStatus(SetNotificationPhone());break;}
-      case 13:
+      case 13: // GetPortalPhone
         {GetPortalPhone();break;}
-      case 14:
+      case 14: // SetPortalPhone
         {SerialB2A.ReplyStatus(SetPortalPhone());break;}
-      case 15:
+      case 15: // Get portal notification frequency
         {GetPortalNotificationFreq();break;}
-      case 16:
+      case 16: // Set portal notification frequency
         {SerialB2A.ReplyStatus(SetPortalNotificationFreq());break;}
-      case 17:
+      case 17: // Get Logging Frequency
         {GetLoggingFreq();break;}
-      case 18:
+      case 18: // Set Logging Frequency
         {SerialB2A.ReplyStatus(SetLoggingFreq());break;}
-      case 19:
+      case 19: // Get hub time
         {GetTime();break;}
-      case 20:
+      case 20: // Set hub time
         {SerialB2A.ReplyStatus(SetupTime());break;}
-      case 21:
+      case 21: // Get hub date
         {GetDate();break;}
-      case 22:
+      case 22: // Set hub date
         {SerialB2A.ReplyStatus(SetupDate());break;}
-      case 23:
+      case 23: // Get critical temperature
         {GetCritTemp();break;}
-      case 24:
+      case 24: // Set critical temperature
         {SerialB2A.ReplyStatus(SetCritTemp());break;}
-      case 25:
+      case 25: // Get critical humidity
         {GetCritHumidity();break;}
-      case 26:
+      case 26: // Set critical humidity
         {SerialB2A.ReplyStatus(SetCritHumidity());break;}
-      case 27:
+      case 27: // Get data
         {GetData();break;}
-      case 28:
+      case 28: // Record data
         {SerialB2A.ReplyStatus(RecordData());break;}
     }
-    Serial.println(F("done"));
+    //Serial.println(F("done"));
   }
   else delay(100);
 

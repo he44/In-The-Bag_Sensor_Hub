@@ -1,14 +1,4 @@
-/***** CASE 1 *****/
-int SetupTime()
-{
-  Clock.setHour(atoi(SerialB2A.Parameter[1]));
-  Clock.setMinute(atoi(SerialB2A.Parameter[2]));
-  Clock.setSecond(atoi(SerialB2A.Parameter[3]));
-  SerialB2A.ClearAllBuffer();
-  return 0;
-}
-
-/***** CASE 2 *****/
+/***** CASE 19 *****/
 void GetTime()
 {
   char temp[2];
@@ -23,17 +13,17 @@ void GetTime()
   SerialB2A.ClearAllBuffer();
 }
 
-/***** CASE 3 *****/
-int SetupDate()
+/***** CASE 20 *****/
+int SetupTime()
 {
-  Clock.setYear(atoi(SerialB2A.Parameter[1]));
-  Clock.setMonth(atoi(SerialB2A.Parameter[2]));
-  Clock.setDate(atoi(SerialB2A.Parameter[3]));
+  Clock.setHour(atoi(SerialB2A.Parameter[1]));
+  Clock.setMinute(atoi(SerialB2A.Parameter[2]));
+  Clock.setSecond(atoi(SerialB2A.Parameter[3]));
   SerialB2A.ClearAllBuffer();
   return 0;
 }
 
-/***** CASE 4 *****/
+/***** CASE 21 *****/
 void GetDate()
 {
   char temp[2];
@@ -48,6 +38,18 @@ void GetDate()
   SerialB2A.SendData();
   SerialB2A.ClearAllBuffer();
 }
+
+/***** CASE 22 *****/
+int SetupDate()
+{
+  Clock.setYear(atoi(SerialB2A.Parameter[1]));
+  Clock.setMonth(atoi(SerialB2A.Parameter[2]));
+  Clock.setDate(atoi(SerialB2A.Parameter[3]));
+  SerialB2A.ClearAllBuffer();
+  return 0;
+}
+
+
 
 /***** Alarm Scheduling Functions *****/
 

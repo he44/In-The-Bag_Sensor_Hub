@@ -23,4 +23,21 @@ void sendAlert(byte txt)
   
 }
 
+void alertPortal(char * message)
+{
+  cell.listen();
+  delay(500);
+  cell.FwdSMS2Serial();
+  cell.SendSMS(PortalPhone, message);
+}
 
+void GSMcommand()
+{
+  cell.SendSMS(AlertPhone, "received");
+  cell.listen();
+  delay(500);
+  cell.FwdSMS2Serial();
+  cell.ReceiveSMS();
+  Serial.println(cell.inmessage);
+  BTSerial.listen();
+}

@@ -1,7 +1,7 @@
 /***** CASE 1 *****/
 void factoryReset()
 {
-  
+  //WRITE THIS FUNCTION
 }
 
 /***** CASE 2 *****/

@@ -18,6 +18,14 @@ void setupBluetooth()
     Serial.println(F("Entering Config Mode"));
   }
 
+  BTSerial.atIMME('1');
+
+  BTSerial.print("AT+NAMEHub");
+  BTSerial.readLine();
+
+  BTSerial.print("AT+PIO11");
+  BTSerial.readLine();
+
   BTSerial.atRESET();
   digitalWrite(MODE_LED, HubMode);
 }

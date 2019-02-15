@@ -10,19 +10,19 @@
 #include <LinkedList.h>
 #include <SerialGSM.h>
 #include <HM_10.h>
-
+#include <String.h>
 
 //=====[ PINS ]=================================================================
 // HM-10 Pins
 #define RX_BT  2
 #define TX_BT  3
-#define KEY  4
-#define STATE  5
+#define KEY    5
+#define STATE  4
 
 // Hub-B Pins
-#define RX_B 6
-#define TX_B 7
-#define FLAG 11
+#define RX_B   6
+#define TX_B   7
+#define FLAG   11
 
 // Switch Pin
 #define MODE_SWITCH 8
@@ -50,6 +50,18 @@
 #define MIN_CMD 0
 #define MAX_CMD 26
 
+//=====[ CLASSES ]==============================================================
+class Sensor
+{
+  public:
+    char address[ADDR_SIZE + 1];
+};
+
+//=====[ OBJECTS ]==============================================================
+LinkedList<Sensor*> SensorList = LinkedList<Sensor*>();
+HM_10 BTSerial(RX_BT, TX_BT, KEY, STATE);
+SoftwareSerial SerialB(RX_B, TX_B);
+SerialGSM cell(RX_GSM, TX_GSM);
 
 //=====[ VARIABLES ]============================================================
 char Buffer[BUFF_SIZE];        // Serial buffer
@@ -68,20 +80,6 @@ int critHum = 0;
 
 bool HubMode = false;
 
-//=====[ CLASSES ]==============================================================
-class Sensor
-{
-  public:
-    char address[ADDR_SIZE + 1];
-};
-
-
-//=====[ OBJECTS ]==============================================================
-LinkedList<Sensor*> SensorList = LinkedList<Sensor*>();
-HM_10 BTSerial(RX_BT, TX_BT, KEY, STATE);
-SoftwareSerial SerialB(RX_B, TX_B);
-SerialGSM cell(RX_GSM, TX_GSM);
-
 
 //=====[ SETUP ]================================================================
 void setup() 
@@ -93,7 +91,7 @@ void setup()
   
   SerialB.setTimeout(2000);
   // Set Pin Modes
-  pinMode(FLAG, INPUT);
+  pinMode(FLAG, INPUT_PULLUP);
   pinMode(MODE_SWITCH, INPUT);
   pinMode(MODE_LED, OUTPUT);
   pinMode(BUSY_LED, OUTPUT);
@@ -155,6 +153,7 @@ void loop()
   if(checkModeChange())
     switchMode();
 
+  cell.println("AT+CNMI=2,2,0,0,0");
   if(HubMode) // Bluetooth is in Master Role (Used for Sensor Checks)
   {
     // Wait for Alarm Flag or for the Mode Switch
@@ -169,6 +168,8 @@ void loop()
   }
   else  // Bluetooth is in Slave Role (Used for being configured by the App)
   {
+    if(cell.available())
+      GSMcommand();
     if(BTSerial.available())
       BluetoothParser();
   }
