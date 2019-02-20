@@ -421,6 +421,8 @@ void GetData(){
   dataFile.close();
 }
 
+//  Need to print out what happens before, within and after this function
+//  Based on the terminal output, this function might never get called
 /***** CASE 28 *****/
 int RecordData()
 {

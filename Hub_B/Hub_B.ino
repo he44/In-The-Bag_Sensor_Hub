@@ -63,6 +63,8 @@ void setup()
   pinMode(FLAG, OUTPUT);
   digitalWrite(FLAG, HIGH);
   
+
+  // potentially dead loop here
   Serial.println(F("Setting up SD card..."));
   if (!SD.begin(CS)) 
   {
