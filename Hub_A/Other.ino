@@ -34,6 +34,10 @@ bool checkAlarm()
   return digitalRead(FLAG);
 }
 
+//  Potentially an infinite loop in this functino
+//  This function should return False, i.e. digitalRead(MODE_SWITCH) should 
+//  equal to HubMode
+//  If this functino returns true
 bool checkModeChange()
 {
   return digitalRead(MODE_SWITCH) != HubMode;

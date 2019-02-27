@@ -158,6 +158,9 @@ void loop()
   {
     // Wait for Alarm Flag or for the Mode Switch
     Serial.println(F("Waiting for Alarm..."));
+    //  Infinite loop: FLAG is LOW and checkModeChange returns False
+    //  we can cross this if FLAG is high or checkModeChange returns True
+    Serial.println(F("If stuck here, FLAG is low and checkModeChange returns False"))
     while(digitalRead(FLAG) == LOW && !checkModeChange());
 
     // Check if there was a change in the Mode Switch, if not then check sensors

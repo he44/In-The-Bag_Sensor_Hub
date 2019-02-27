@@ -1,0 +1,22 @@
+☐ Research the infinite loops
+    ☐ "Waiting for Hub_B..."
+        ✔ find the line in .ino file @started(19-02-27 11:51) @done(19-02-27 12:20) @lasted(29m9s)
+        ☐ add print statements before and after that code block @started(19-02-27 11:51)
+        Observation:
+            - it seems that all the print statements are from Hub A
+            - fix: just need to disconnect TX/RX/ReSET from controller A and then connect them to controller B 
+    ✔ "Waiting for Alarm..." @done(19-02-27 12:15)
+        ✔ find the line in .ino file @started(19-02-27 11:53) @done(19-02-27 12:13) @lasted(20m26s)
+        ✔ add print statements around that code block @done(19-02-27 12:13)
+        Note:
+            the most probable reason for this infinite loop is still FLAG (B-A commnucation)
+            checkModeChange() can be toggled by the physical swtich on hub board. We can easily control what value it returns
+            However, toggling that will lead hub into "config mode", which is not what we want
+        Conclusion:
+            for the hub to work, it must pass this while loop by FLAG == HIGH
+        ☐ Check why the if statement in line 94 in Hub_B.ino didn't evaulate to True
+            Code:
+                DS3231 Clock;
+                Clock.checkIfAlarm(1)
+            Possible reference:
+                https://github.com/NorthernWidget/DS3231/blob/master/DS3231.h

@@ -81,6 +81,8 @@ void setup()
 
   Serial.println(F("Setup done."));
   digitalWrite(FLAG, LOW);
+    //  Added for debug
+    Serial.println(F("Hub B has written Flag to LOW, so Hub A can say Hub B is ready"));
 }
 //==============================================================================
 
@@ -99,7 +101,7 @@ void loop()
     //Every Minute
     byte m = (Clock.getMinute() + logFreq) % 60;
     Clock.setA1Time(Clock.getDate(), 0, m, 0, ALARM_BITS, false, h12, PM);
-    Serial.println(F("Alarm has been set!"));
+    Serial.println(F("Alarm has been set! In HubB's loop!"));
   }
   
   //Standby and wait for commands from Hub_A
