@@ -1,0 +1,7 @@
+hubID=1234
+alertPhone=2179790883
+portalPhone=2179790883
+portalFreq=1
+logFreq=1
+critTemperature=10
+critHumidity=10

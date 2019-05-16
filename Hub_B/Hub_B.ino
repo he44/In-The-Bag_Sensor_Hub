@@ -75,12 +75,14 @@ void setup()
   
   SerialB2A.ClearAllBuffer();
   // rtc
-  Clock.turnOnAlarm(1);
-  byte m = (Clock.getMinute() + logFreq) % 60;
-  Clock.setA1Time(Clock.getDate(), 0, m, 0, ALARM_BITS, false, h12, PM);
-  Serial.println(F("Alarm has been set!"));
+  Serial.println(F("I disabled RTC alarm completely"));
+  // Clock.turnOnAlarm(1);
+  // byte m = (Clock.getMinute() + logFreq) % 60;
+  // //  From library file, set alarm 1 details
+  // Clock.setA1Time(Clock.getDate(), 0, m, 0, ALARM_BITS, false, h12, PM);
+  // Serial.println(F("Alarm has been set!"));
 
-  Serial.println(F("Setup done."));
+  Serial.println(F("Setup for SD done."));
   digitalWrite(FLAG, LOW);
   //  Added for debug
   Serial.println(F("Hub B has written Flag to LOW, so Hub A can say Hub B is ready"));

@@ -155,7 +155,7 @@ void loop()
   // Check if the hub mode needs to be changed
   // if(checkModeChange())
   //   switchMode();
-  delay(3000);
+  delay(5000);
   cell.println("AT+CNMI=2,2,0,0,0");
   if(HubMode) // Bluetooth is in Master Role (Used for Sensor Checks)
   {
