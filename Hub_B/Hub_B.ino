@@ -63,7 +63,8 @@ void setup()
   pinMode(FLAG, OUTPUT);
   digitalWrite(FLAG, HIGH);
   
-
+  Serial.println(F("Printing from Microcontroller B"));
+  Serial.println(F("Last modified in May, 2019"));
   // potentially dead loop here
   Serial.println(F("Setting up SD card..."));
   if (!SD.begin(CS)) 

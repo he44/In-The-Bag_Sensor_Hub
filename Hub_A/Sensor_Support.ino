@@ -10,6 +10,8 @@ void checkSensor(byte num, String &message)
   BTSerial.atCO('N',s->address);
   delay(1000);
 
+  Serial.print(F("Want to see the address"));
+  Serial.println(s->address);
   Serial.println(F("Requesting Data from Sensor..."));
   float t = -1.0;
   float h = -1.0;
