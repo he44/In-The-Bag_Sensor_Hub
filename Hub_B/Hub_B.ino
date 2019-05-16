@@ -64,7 +64,7 @@ void setup()
   digitalWrite(FLAG, HIGH);
   
   Serial.println(F("Printing from Microcontroller B"));
-  Serial.println(F("Last modified in May, 2019"));
+  Serial.println(F("Last modified on May 16, 2019"));
   // potentially dead loop here
   Serial.println(F("Setting up SD card..."));
   if (!SD.begin(CS)) 
@@ -74,7 +74,7 @@ void setup()
   }
   
   SerialB2A.ClearAllBuffer();
-  
+  // rtc
   Clock.turnOnAlarm(1);
   byte m = (Clock.getMinute() + logFreq) % 60;
   Clock.setA1Time(Clock.getDate(), 0, m, 0, ALARM_BITS, false, h12, PM);
@@ -82,8 +82,8 @@ void setup()
 
   Serial.println(F("Setup done."));
   digitalWrite(FLAG, LOW);
-    //  Added for debug
-    Serial.println(F("Hub B has written Flag to LOW, so Hub A can say Hub B is ready"));
+  //  Added for debug
+  Serial.println(F("Hub B has written Flag to LOW, so Hub A can say Hub B is ready"));
 }
 //==============================================================================
 
@@ -94,6 +94,7 @@ void loop()
   //Check if it's time to remind Hub_A to check sensors
   if(Clock.checkIfAlarm(1))
   {
+    Serial.println(F("Entering Hub B loop, if part, rtc rings"));
     digitalWrite(FLAG, HIGH);
     //Every Hour
     //byte h = (Clock.getHour(h12,PM) + logFreq) % 24;

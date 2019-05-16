@@ -1,5 +1,10 @@
 /***** CASE 2 *****/
 void GetHubID(){
+  if (SD.exists("config.txt")) {
+    Serial.println(F("In GetHubID() in SD.ino, config.txt exists"));
+  } else{
+    return;
+  }
   File dataFile = SD.open(F("config.txt"));
   if (dataFile) {
     SeekLine(&dataFile,0);
@@ -51,6 +56,7 @@ void CheckErrorHistory()
 /***** CASE 6 *****/
 void GetMacAddress(int sensorNum)
 {
+  Serial.println("in GetMacAddress of SD.ino");
   File dataFile = SD.open(F("SensAddr.txt"));
   if (dataFile)
   {

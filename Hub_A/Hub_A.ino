@@ -99,7 +99,7 @@ void setup()
   // Start General Setup Process
   delay(3000);
   Serial.println(F("Printing from Microcontroller A"));
-  Serial.println(F("Last modified in May, 2019"));
+  Serial.println(F("Last modified on May 16, 2019"));
   Serial.println(F("Setup Start!"));
   
   // Show that Hub is Busy
@@ -153,9 +153,9 @@ void setup()
 void loop() 
 {
   // Check if the hub mode needs to be changed
-  if(checkModeChange())
-    switchMode();
-
+  // if(checkModeChange())
+  //   switchMode();
+  delay(3000);
   cell.println("AT+CNMI=2,2,0,0,0");
   if(HubMode) // Bluetooth is in Master Role (Used for Sensor Checks)
   {
@@ -163,17 +163,20 @@ void loop()
     Serial.println(F("Waiting for Alarm..."));
     //  Infinite loop: FLAG is LOW and checkModeChange returns False
     //  we can cross this if FLAG is high or checkModeChange returns True
-    Serial.println(F("If stuck here, FLAG is low and checkModeChange returns False"));
-    while(digitalRead(FLAG) == LOW && !checkModeChange());
-
+    Serial.println(F("If stuck here now, FLAG is low. I deleted checkModeChange"));
+    // while(digitalRead(FLAG) == LOW && !checkModeChange());
+    //  DEBUG: there won't be any mode change at this point
+    // while (digitalRead(FLAG) == LOW);
     // Check if there was a change in the Mode Switch, if not then check sensors
-    if(checkModeChange())
-      switchMode();
-    else
-      checkAllSensors();
+    // if(checkModeChange())
+    //   switchMode();
+    // else
+    //   checkAllSensors();
+    checkAllSensors();
   }
   else  // Bluetooth is in Slave Role (Used for being configured by the App)
   {
+    Serial.println(F("I don't think we will ever be in slave mode for now"));
     if(cell.available())
       GSMcommand();
     if(BTSerial.available())
